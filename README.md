@@ -4903,7 +4903,285 @@ aligner.score(target, query, strand = "+")
 ```
 
 # BLAST
+```python
+from Bio.Blast import NCBIWWW
+```
+
+
+```python
+NCBIWWW.email = "annaclaireb22@gmail.com"
+```
+
+
+```python
+result_handle = NCBIWWW.qblast("blastn", "nt", "8332116")
+```
+
+
+```python
+# What if you have something that you want to blast or you sequenced something
+#https://raw.githubusercontent.com/biopython/biopython/master/Doc/examples/m_cold.fasta
+```
+
+
+```python
+from Bio import SeqIO
+```
+
+
+```python
+record = SeqIO.read("m_cold.fasta.txt", format = "fasta")
+```
+
+
+```python
+print(record)
+```
+
+    ID: gi|8332116|gb|BE037100.1|BE037100
+    Name: gi|8332116|gb|BE037100.1|BE037100
+    Description: gi|8332116|gb|BE037100.1|BE037100 MP14H09 MP Mesembryanthemum crystallinum cDNA 5' similar to cold acclimation protein, mRNA sequence
+    Number of features: 0
+    Seq('CACTAGTACTCGAGCGTNCTGCACCAATTCGGCACGAGCAAGTGACTACGTTNT...TTC')
+
+
+
+```python
+result_handle = NCBIWWW.qblast("blastn", "nt", record.seq)
+```
+
+
+```python
+with open("m_cold.fasta.txt", "w") as out_handle:
+    out_handle.write(result_handle.read())
+result_handle.close()
+```
+
+
+```python
+from Bio.Blast import NCBIXML
+```
+
+
+```python
+result_handle = open("my_blast.xml")
+```
+
+
+    ---------------------------------------------------------------------------
+
+    FileNotFoundError                         Traceback (most recent call last)
+
+    <ipython-input-24-5d5d42105f61> in <module>
+    ----> 1 result_handle = open("my_blast.xml")
+    
+
+    FileNotFoundError: [Errno 2] No such file or directory: 'my_blast.xml'
+
+
+
+```python
+blastrecord = NCBIXML.read(result_handle)
+```
+
+
+    ---------------------------------------------------------------------------
+
+    NameError                                 Traceback (most recent call last)
+
+    <ipython-input-1-5fe4f42e615c> in <module>
+    ----> 1 blastrecord = NCBIXML.read(result_handle)
+    
+
+    NameError: name 'NCBIXML' is not defined
+
+
+
+```python
+E_VALUE_THRESH = 0.04
+```
+
+
+```python
+for alignment in blast_record.alignments:
+    for hsp in alignment.hsps:
+        if hsp.expect < E_VALUE_THRESH:
+            print("****ALIGNMENT****")
+            print("sequence:", alignment.title)
+            print("length:", alignment.length)
+            print("e value:", hsp.expect)
+            print(hsp.query[0:75] + "...")
+            print(hsp.match[0:75] + "...")
+            print(hsp.sbjct[0:75] + "...")
+```
+
+
+    ---------------------------------------------------------------------------
+
+    NameError                                 Traceback (most recent call last)
+
+    <ipython-input-3-ae107f6627f0> in <module>
+    ----> 1 for alignment in blast_record.alignments:
+          2     for hsp in alignment.hsps:
+          3         if hsp.expect < E_VALUE_THRESH:
+          4             print("****ALIGNMENT****")
+          5             print("sequence:", alignment.title)
+
+
+    NameError: name 'blast_record' is not defined
+
+
+
+```python
+
+```
+
 # Challenge 
+```python
+from Bio.Blast import NCBIWWW
+```
+
+
+```python
+NCBIWWW.email = "annaclaireb22@gmail.com"
+```
+
+
+```python
+result_handle = NCBIWWW.qblast("blastn", "nt", "101867536")
+```
+
+
+```python
+from Bio import SeqIO
+```
+
+
+```python
+# Now we are going to blast this cancer gene
+```
+
+
+```python
+record = SeqIO.read("gene.fna", format = "fasta")
+```
+
+
+    ---------------------------------------------------------------------------
+
+    ValueError                                Traceback (most recent call last)
+
+    <ipython-input-7-56d44624ad14> in <module>
+    ----> 1 record = SeqIO.read("gene.fna", format = "fasta")
+    
+
+    ~/anaconda3/lib/python3.7/site-packages/Bio/SeqIO/__init__.py in read(handle, format, alphabet)
+        657     try:
+        658         next(iterator)
+    --> 659         raise ValueError("More than one record found in handle")
+        660     except StopIteration:
+        661         pass
+
+
+    ValueError: More than one record found in handle
+
+
+
+```python
+print(record)
+```
+
+
+```python
+result_handle = NCBIWWW.qblast("blastn", "nt", record.seq)
+```
+
+
+```python
+with open("gene.fna", "w") as out_handle:
+    out_handle.write(result_handle.read())
+result_handle.close()
+```
+
+
+```python
+from Bio.Blast import NCBIXML
+```
+
+
+```python
+result_handle = open("my_blast.xml")
+```
+
+
+    ---------------------------------------------------------------------------
+
+    FileNotFoundError                         Traceback (most recent call last)
+
+    <ipython-input-8-5d5d42105f61> in <module>
+    ----> 1 result_handle = open("my_blast.xml")
+    
+
+    FileNotFoundError: [Errno 2] No such file or directory: 'my_blast.xml'
+
+
+
+```python
+blastrecord = NCBIXML.read(result_handle)
+```
+
+
+    ---------------------------------------------------------------------------
+
+    NameError                                 Traceback (most recent call last)
+
+    <ipython-input-9-5fe4f42e615c> in <module>
+    ----> 1 blastrecord = NCBIXML.read(result_handle)
+    
+
+    NameError: name 'NCBIXML' is not defined
+
+
+
+```python
+E_VALUE_THRESH = 0.04
+```
+
+
+```python
+for alignment in blast_record.alignments:
+    for hsp in alignment.hsps:
+        if hsp.expect < E_VALUE_THRESH:
+            print("****ALIGNMENT****")
+            print("sequence:", alignment.title)
+            print("length:", alignment.length)
+            print("e value:", hsp.expect)
+            print(hsp.query[0:75] + "...")
+            print(hsp.match[0:75] + "...")
+            print(hsp.sbjct[0:75] + "...")
+```
+
+
+    ---------------------------------------------------------------------------
+
+    NameError                                 Traceback (most recent call last)
+
+    <ipython-input-11-ae107f6627f0> in <module>
+    ----> 1 for alignment in blast_record.alignments:
+          2     for hsp in alignment.hsps:
+          3         if hsp.expect < E_VALUE_THRESH:
+          4             print("****ALIGNMENT****")
+          5             print("sequence:", alignment.title)
+
+
+    NameError: name 'blast_record' is not defined
+
+
+
+```python
+
+```
+
 # Open CV Basics
 ```python
 import numpy as np
